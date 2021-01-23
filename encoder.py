@@ -9,6 +9,22 @@ exitcall = 0
 # Writing to the log file about program startup
 module.logcat('Program Started', 'ncode', False)
 
+# Does a one time check if the logfile is larger than 2 Megabytes
+module.logsize()
+
+# Check if the user wants to keep history
+while True:
+    tokeeph = str(input('Do You want to keep history? Y/N: '))
+    if tokeeph.lower() == 'y':
+        tokeeph = True
+        break
+    elif tokeeph.lower() == 'n':
+        tokeeph = False
+        break
+    else:
+        print('Please choose a valid option! Enter Y or N.')
+        continue
+
 # Main Loop. Runs until the program ends
 while module.errorhandler(code, 'ncode') == 0:
     # Ask the user for statement or command
@@ -61,7 +77,7 @@ while module.errorhandler(code, 'ncode') == 0:
         module.logcat('Encoded value is- ' + encode, 'ncode', False)
 
         # Writing to the history
-        module.writehis(encode, 'ncode')
+        module.writehis(encode, 'ncode', tokeeph)
         module.logcat('Added ' + encode + ' to the history', 'ncode', False)
     else:
         pass
