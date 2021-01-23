@@ -12,13 +12,20 @@ module.logcat('Program Started', 'ncode', False)
 # Does a one time check if the logfile is larger than 2 Megabytes
 module.logsize()
 
+# Taking key for the entire session
+key = str(input('Please enter the key for this enitre session: '))
+module.logcat('Key for the session- ' + key, 'ncode', False)
+
 # Check if the user wants to keep history
 while True:
     tokeeph = str(input('Do You want to keep history? Y/N: '))
     if tokeeph.lower() == 'y':
+        module.logcat('Keeping the history for this session.', 'ncode', False)
         tokeeph = True
         break
     elif tokeeph.lower() == 'n':
+        print('We will not keep history. However the logs will still be maintained. Please clear the logs if you want.')
+        module.logcat('Not Keeping the history for this session', 'ncode', False)
         tokeeph = False
         break
     else:
@@ -69,7 +76,7 @@ while module.errorhandler(code, 'ncode') == 0:
 
     # Main Code that will encode the statement
     else:
-        encode = module.encoder(mainstr)
+        encode = module.encrypt(mainstr, key)
 
     # Printing Handler
     if encode != '':
