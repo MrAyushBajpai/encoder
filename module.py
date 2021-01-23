@@ -23,9 +23,9 @@ keyphrase_ncode = {'a': 'm', 'b': 'w', 'c': 'e', 'd': 'r', 'e': 't', 'f': 'y', '
                    ' ': ' '
                    }
 keyphrase_dcode = dict([(value, key) for key, value in keyphrase_ncode.items()])
-ncode_history = 'History/ncode_history.txt'
-dcode_history = 'History/dcode_history.txt'
-logfile = 'History/log.txt'
+ncode_history = 'ncode.his'
+dcode_history = 'dcode.his'
+logfile = 'log.txt'
 
 
 # Function to encode the data
@@ -90,21 +90,24 @@ def clear():
 
 
 # Function to write history to their specific history files
-def writehis(historytext, origin):
-    if origin == 'ncode':
-        n_history = open(ncode_history, 'a')
-        n_history.write(historytext)
-        n_history.write('\n')
-        n_history.close()
+def writehis(historytext, origin, towrite):
+    if towrite:
+        if origin == 'ncode':
+            n_history = open(ncode_history, 'a')
+            n_history.write(historytext)
+            n_history.write('\n')
+            n_history.close()
 
-    elif origin == 'dcode':
-        d_history = open(dcode_history, 'a')
-        d_history.write(historytext)
-        d_history.write('\n')
-        d_history.close()
+        elif origin == 'dcode':
+            d_history = open(dcode_history, 'a')
+            d_history.write(historytext)
+            d_history.write('\n')
+            d_history.close()
 
-    elif origin != 'dcode' or origin != 'ncode':
-        errorhandler(1, origin)
+        elif origin != 'dcode' or origin != 'ncode':
+            errorhandler(1, origin)
+    else:
+        pass
 
 
 # Function to clear specific history
@@ -204,3 +207,9 @@ def errorhandler(errorcode, origin):
         print('System Encounterd an error. Error Code-' + errorcode + '. Please refer to the logfile for more info.')
         time.sleep(5)
         return 1
+
+
+# Function for checking if the log size is higher than 2 Mb
+def logsize():
+    if os.stat(logfile).st_size > 2097152:
+        clearlog()
