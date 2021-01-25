@@ -22,7 +22,7 @@ These are the current commands. To use these command, write cmd followed by the 
 7. 'show /errors' or 'show /e' for viewing all the errors in the logfile. It should be noted that if you clear the logs, the error will also be cleared.
 
 # Encode
-The 'encode' process allows to encode a given task. Say you want to encode 'Hello World'. To do this, simply type "encode Hello World" (without double quotes). It will encode whatever follows the 'encode' process-name. It will output 'Itaaf Cfjar' on the console.
+The 'encode' process allows to encode a given task. Say you want to encode 'Hello World'. To do this, simply type "encode Hello World" (without double quotes). It will encode whatever follows the 'encode' process-name. It will output the encoded message based upon the key on the console.
 
 # Decode
-The 'decode' process allows to decode a given task. Say you want to decode 'Itaaf Cfjar'. To do this, simply type "decode Hello World" (without double quotes). It will decode whatever follows the 'decode' process-name. It will output 'Hello World' on the console.
+The 'decode' process allows to decode a given task. Say you want to decode 'Itaaf Cfjar'. To do this, simply type "decode Hello World" (without double quotes). It will decode whatever follows the 'decode' process-name. It will output the decoded message based upon the key on the console.
