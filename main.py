@@ -12,6 +12,9 @@ module.logcat('Program Started', False)
 # Does a one time check if the logfile is larger than 2 MBs
 module.logsize()
 
+# Take the key for the session from the user
+key = str(input('Please enter the Key for this entire session: '))
+
 # Check if the user wants to keep history
 while True:
     tokeeph = str(input('Do You want to keep history? Y/N: '))
@@ -64,12 +67,12 @@ while module.errorhandler(code) == 0:
             module.errorhandler(3, out)
     elif mainstr[0:6].lower() == 'encode':
         module.logcat('Calling the encode function with data ' + mainstr, False)
-        data = (module.encodeprocess(mainstr))
+        data = (module.encodeprocess(mainstr, key))
         org = 'encode'
 
     elif mainstr[0:6].lower() == 'decode':
         module.logcat('Calling the decode funcion with data ' + mainstr, False)
-        data = (module.decodeprocess(mainstr))
+        data = (module.decodeprocess(mainstr, key))
         org = 'decode'
 
     else:
