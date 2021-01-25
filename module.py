@@ -49,38 +49,56 @@ def logcat(event, iserror):
         logs.close()
 
 
-# Function to encode the data
-def encoder(data):
-    logcat('Received ' + data + ' as the input to be process at the encoder', False)
-    encoded = ''
-    encode = ''
-    for item in data:
-        if item in keyphrase_ncode:
-            encoded += keyphrase_ncode.get(item)
-            encode = encoded
+def firstindex(key):
+    if 97 <= ord(key[0]) < 109:
+        set1 = True
+    elif 109 <= ord(key[0]) < 122:
+        set1 = False
+    elif 65 <= ord(key[0]) < 77:
+        set1 = False
+    elif 77 <= ord(key[0]) < 90:
+        set1 = True
+    elif 48 <= ord(key[0]) < 53:
+        set1 = True
+    elif 53 <= ord(key[0]) < 57:
+        set1 = False
+    else:
+        set1 = True
+    return set1
 
-        else:
-            encoded += item
-            encode = encoded
-    logcat('Outputing ' + encode + ' as the processed output from the encoder', False)
-    return encode
+
+# Function to encode the data
+def encoder(data, key):
+    logcat('Received ' + data + ' as the input to be process at the encoder', False)
+    keysum = 0
+    for v in key:
+        keysum += ord(v)
+    a = ''
+    if firstindex(key):
+        for i in data:
+            a += chr((ord(i) + keysum) % 127)
+    else:
+        for i in data:
+            a += chr((ord(i) - keysum) % 127)
+    logcat('Outputing ' + a + ' as the processed output from the encoder', False)
+    return a
 
 
 # Function to Decode the data
-def decoder(data):
+def decoder(data, key):
     logcat('Received ' + data + ' as the input to be process at the decoder', False)
-    decoded = ''
-    decode = ''
-    for charc in data:
-        if charc in keyphrase_dcode:
-            decoded += keyphrase_dcode.get(charc)
-            decode = decoded
-
-        else:
-            decoded += charc
-            decode = decoded
-    logcat('Outputing ' + decode + ' as the processed output from the decoder', False)
-    return decode
+    keysum = 0
+    for v in key:
+        keysum += ord(v)
+    a = ''
+    if firstindex(key):
+        for i in data:
+            a += chr((ord(i) - keysum) % 127)
+    else:
+        for i in data:
+            a += chr((ord(i) + keysum) % 127)
+    logcat('Outputing ' + a + ' as the processed output from the decoder', False)
+    return a
 
 
 # Function to check if the file exists and if it is empty or not
@@ -237,19 +255,19 @@ def commander(text):
         return text
 
 
-def encodeprocess(text):
+def encodeprocess(text, key):
     text = list(text)
     del text[0:6]
     if len(text) > 0 and text[0] == ' ':
         del text[0]
     text = ''.join(text)
-    return encoder(text)
+    return encoder(text, key)
 
 
-def decodeprocess(text):
+def decodeprocess(text, key):
     text = list(text)
     del text[0:6]
     if len(text) > 0 and text[0] == ' ':
         del text[0]
     text = ''.join(text)
-    return decoder(text)
+    return decoder(text, key)
