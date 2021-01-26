@@ -93,6 +93,8 @@ while module.errorhandler(code) == 0:
     elif mainstr[0:3].lower() == 'key':
         c = list(mainstr)
         del c[0:3]
+        if c[0] == ' ':
+            del c[0]
         c = ''.join(c)
         module.logcat('User changed the key from' + key + 'to ' + c, False)
         key = c
