@@ -13,7 +13,14 @@ module.logcat('Program Started', False)
 module.logsize()
 
 # Take the key for the session from the user
-key = str(input('Please enter the Key for this entire session: '))
+while True:
+    key = str(input('Please enter the Key for this entire session: '))
+    if len(key) >= 8:
+        break
+    else:
+        print('Please enter a key with 8 or more characters.')
+        continue
+module.logcat('The Key for the session is ' + key, False)
 
 # Check if the user wants to keep history
 while True:
@@ -27,6 +34,10 @@ while True:
     else:
         print('Please choose a valid option! Enter Y or N.')
         continue
+if tokeeph:
+    module.logcat('Keeping the history for the session.', False)
+else:
+    module.logcat('Not Keeping History for this session', False)
 
 # Main Loop. Runs until the program ends
 while module.errorhandler(code) == 0:
@@ -41,7 +52,7 @@ while module.errorhandler(code) == 0:
     out = ''
     org = ''
 
-    # Checking if the user entered a command by using cmd
+    # Checking if the user specified process was cmd
     if mainstr[0:3].lower() == 'cmd':
         out = module.commander(mainstr)
 
@@ -65,16 +76,29 @@ while module.errorhandler(code) == 0:
         else:
             print('Error Code - 3: Unable to locate command: "' + out + '"')
             module.errorhandler(3, out)
+
+    # Checking if the user specified process was encode
     elif mainstr[0:6].lower() == 'encode':
         module.logcat('Calling the encode function with data ' + mainstr, False)
         data = (module.encodeprocess(mainstr, key))
         org = 'encode'
 
+    # Checking if the user specified process was decode
     elif mainstr[0:6].lower() == 'decode':
         module.logcat('Calling the decode funcion with data ' + mainstr, False)
         data = (module.decodeprocess(mainstr, key))
         org = 'decode'
 
+    # Checking if the user specified process was key
+    elif mainstr[0:3].lower() == 'key':
+        c = list(mainstr)
+        del c[0:3]
+        c = ''.join(c)
+        module.logcat('User changed the key from' + key + 'to ' + c, False)
+        key = c
+        print('The key was changed to ' + key + ' for this session.')
+
+    # If the user did not specify any valid process
     else:
         module.errorhandler(4, mainstr)
         print('Please enter a vaild process to be undertaken.')
