@@ -192,6 +192,7 @@ def errorhandler(errorcode, optionalspecs=''):
 def logsize():
     if os.stat(logfile).st_size > 2097152:
         clearlog()
+        logcat('Flushed the logfile because size exceeded: 2097152 Bytes', False)
 
 
 def logerror():
