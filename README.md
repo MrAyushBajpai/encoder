@@ -5,10 +5,10 @@ This software is made for the purpose of Encoding/Decoding Messages and Statemen
 <process> <task>
   
 Processes include:-
-  1. 'cmd'(case and space insensitive process):- Used to enter a command
-  2. 'encode'(case and space insensitive):- Used to encode a given task
-  3. 'decode'(case and space insensitive):- Used to decode a given task
-  4. 'key' to change the key after you have already specified a key
+  1. 'cmd':- Used to enter a command
+  2. 'encode':- Used to encode a given task
+  3. 'decode':- Used to decode a given task
+  4. 'key':- Used to change the key after you have already specified a key
   
   It should be noted that the process itself is insensitive of case and space, meaning you can write as:- EnCodeHello World. It will be treated as encode Hello World
 
