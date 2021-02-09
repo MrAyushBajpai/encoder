@@ -51,18 +51,21 @@ def checkindex(key, index):
 # Function to encode the data
 def encoder(data, key):
     logcat('Received ' + data + ' as the input to be process at the encoder', False)
-    keysum = 0
-    for v in key:
-        keysum += ord(v)
-    a = ''
-    if checkindex(key, 1):
-        for i in data:
-            a += chr((ord(i) + keysum) % 127)
-    else:
-        for i in data:
-            a += chr((ord(i) - keysum) % 127)
-    logcat('Outputing ' + a + ' as the processed output from the encoder', False)
-    return a
+    try:
+        keysum = 0
+        for v in key:
+            keysum += ord(v)
+        a = ''
+        if checkindex(key, 1):
+            for i in data:
+                a += chr((ord(i) + keysum) % 127)
+        else:
+            for i in data:
+                a += chr((ord(i) - keysum) % 127)
+        logcat('Outputing ' + a + ' as the processed output from the encoder', False)
+        return a
+    except TypeError:
+        errorhandler(5)
 
 
 # Function to Decode the data
@@ -191,8 +194,11 @@ def errorhandler(errorcode, optionalspecs=''):
     elif errorcode == 5:
         logcat('Error Code: 5: Internal Program Issues: TypeError!', True)
 
+    elif errorcode == 6:
+        logcat('Error Code: 6: ModuleNotFoundError!', True)
+
     # In case of errors, let the user know there's an error, and then end the program
-    if errorcode != 0 and errorcode != 0.5 and errorcode != 3 and errorcode != 4:
+    if errorcode != 0 and errorcode != 0.5 and errorcode != 3 and errorcode != 4 and errorcode != 6:
         print('System Encounterd an error. Error Code-' + str(errorcode) + '. Please refer to the logfile for more '
                                                                            'info.')
         time.sleep(5)
