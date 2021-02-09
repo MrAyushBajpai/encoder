@@ -1,5 +1,9 @@
 # Importing Necessary Files
-import module
+try:
+    import module
+except ModuleNotFoundError:
+    print('The File Module.py was not found! Are you sure it is in the same directory as the main.py?')
+    module.errorhandler(6)
 
 # Defining necessary variables
 processed = ''
