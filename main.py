@@ -80,21 +80,18 @@ while module.errorhandler(code) == 0:
     # Checking if the user specified process was encode
     elif mainstr[0:6].lower() == 'encode':
         module.logcat('Calling the encode function with data ' + mainstr, False)
-        data = (module.encodeprocess(mainstr, key))
+        data = module.encoder(module.cleaner(mainstr, 6), key)
         org = 'encode'
 
     # Checking if the user specified process was decode
     elif mainstr[0:6].lower() == 'decode':
         module.logcat('Calling the decode funcion with data ' + mainstr, False)
-        data = (module.decodeprocess(mainstr, key))
+        data = module.decoder(module.cleaner(mainstr, 6), key)
         org = 'decode'
 
     # Checking if the user specified process was key
     elif mainstr[0:3].lower() == 'key':
-        c = list(mainstr)
-        del c[0:3]
-        if c[0] == ' ':
-            del c[0]
+        c = module.cleaner(mainstr, 3)
         c = ''.join(c)
         module.logcat('User changed the key from' + key + 'to ' + c, False)
         key = c
