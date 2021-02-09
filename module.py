@@ -30,18 +30,18 @@ def logcat(event, iserror):
         logs.close()
 
 
-def firstindex(key):
-    if 97 <= ord(key[0]) < 109:
+def checkindex(key, index):
+    if 97 <= ord(key[index]) < 109:
         set1 = True
-    elif 109 <= ord(key[0]) < 122:
+    elif 109 <= ord(key[index]) < 122:
         set1 = False
-    elif 65 <= ord(key[0]) < 77:
+    elif 65 <= ord(key[index]) < 77:
         set1 = False
-    elif 77 <= ord(key[0]) < 90:
+    elif 77 <= ord(key[index]) < 90:
         set1 = True
-    elif 48 <= ord(key[0]) < 53:
+    elif 48 <= ord(key[index]) < 53:
         set1 = True
-    elif 53 <= ord(key[0]) < 57:
+    elif 53 <= ord(key[index]) < 57:
         set1 = False
     else:
         set1 = True
@@ -55,7 +55,7 @@ def encoder(data, key):
     for v in key:
         keysum += ord(v)
     a = ''
-    if firstindex(key):
+    if checkindex(key, 1):
         for i in data:
             a += chr((ord(i) + keysum) % 127)
     else:
@@ -72,7 +72,7 @@ def decoder(data, key):
     for v in key:
         keysum += ord(v)
     a = ''
-    if firstindex(key):
+    if checkindex(key, 1):
         for i in data:
             a += chr((ord(i) - keysum) % 127)
     else:
