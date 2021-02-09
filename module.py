@@ -68,34 +68,41 @@ def encoder(data, key):
 # Function to Decode the data
 def decoder(data, key):
     logcat('Received ' + data + ' as the input to be process at the decoder', False)
-    keysum = 0
-    for v in key:
-        keysum += ord(v)
-    a = ''
-    if checkindex(key, 1):
-        for i in data:
-            a += chr((ord(i) - keysum) % 127)
-    else:
-        for i in data:
-            a += chr((ord(i) + keysum) % 127)
-    logcat('Outputing ' + a + ' as the processed output from the decoder', False)
-    return a
+    try:
+        keysum = 0
+        for v in key:
+            keysum += ord(v)
+        a = ''
+        if checkindex(key, 1):
+            for i in data:
+                a += chr((ord(i) - keysum) % 127)
+        else:
+            for i in data:
+                a += chr((ord(i) + keysum) % 127)
+        logcat('Outputing ' + a + ' as the processed output from the decoder', False)
+        return a
+    except TypeError:
+        errorhandler(5)
 
 
 # Function to check if the file exists and if it is empty or not
 def filecheck(path):
     # Checking if file exists at the given path
     logcat('Doing a filecheck on ' + path, False)
-    if os.path.exists(path):
-        # Checking if the file size is 0, meaning its empty
-        if os.path.getsize(path) > 0:
-            toreturn = True
+    try:
+        if os.path.exists(path):
+            # Checking if the file size is 0, meaning its empty
+            if os.path.getsize(path) > 0:
+                toreturn = True
+            else:
+                toreturn = False
         else:
             toreturn = False
-    else:
-        toreturn = False
-    logcat('Outputing ' + str(toreturn) + ' in the file filecheck on path' + path, False)
-    return toreturn
+        logcat('Outputing ' + str(toreturn) + ' in the file filecheck on path' + path, False)
+        return toreturn
+    except TypeError:
+        errorhandler(5)
+        return False
 
 
 # Function to clear the screen
@@ -180,6 +187,10 @@ def errorhandler(errorcode, optionalspecs=''):
     elif errorcode == 4:
         logcat('Error Code: 4: Process Not Found! Process Entered was: "' + optionalspecs + '"', True)
 
+    # Internal Issue: When a TypeError Occurs
+    elif errorcode == 5:
+        logcat('Error Code: 5: Internal Program Issues: TypeError!', True)
+
     # In case of errors, let the user know there's an error, and then end the program
     if errorcode != 0 and errorcode != 0.5 and errorcode != 3 and errorcode != 4:
         print('System Encounterd an error. Error Code-' + str(errorcode) + '. Please refer to the logfile for more '
@@ -211,37 +222,43 @@ def logerror():
 
 # If the user enters a command, this will be used to check the command
 def commander(text):
-    text = list(text)
-    text.remove('c')
-    text.remove('m')
-    text.remove('d')
-    while ' ' in text:
-        text.remove(' ')
-    text = ''.join(text)
-
-    if text.lower() == 'exit' or text.lower() == 'close':
-        return 'exit'
-    elif text.lower() == 'clear/h' or text.lower() == 'clear/history':
-        return 'clearhistory'
-    elif text.lower() == 'history' or text.lower() == 'show/h' or text.lower() == 'show/history':
-        return 'showhistory'
-    elif text.lower() == 'clear/a' or text.lower() == 'clear/all':
-        return 'clearall'
-    elif text.lower() == 'cls' or text.lower() == 'clear':
-        return 'clearscreeen'
-    elif text.lower() == 'clear/logs' or text.lower() == 'clear/l':
-        return 'clearlog'
-    elif text.lower() == 'errors' or text.lower() == 'show/errors' or text.lower() == 'show/e':
-        return 'logerrors'
-    else:
-        return text
+    try:
+        text = list(text)
+        text.remove('c')
+        text.remove('m')
+        text.remove('d')
+        while ' ' in text:
+            text.remove(' ')
+        text = ''.join(text)
+        if text.lower() == 'exit' or text.lower() == 'close':
+            return 'exit'
+        elif text.lower() == 'clear/h' or text.lower() == 'clear/history':
+            return 'clearhistory'
+        elif text.lower() == 'history' or text.lower() == 'show/h' or text.lower() == 'show/history':
+            return 'showhistory'
+        elif text.lower() == 'clear/a' or text.lower() == 'clear/all':
+            return 'clearall'
+        elif text.lower() == 'cls' or text.lower() == 'clear':
+            return 'clearscreeen'
+        elif text.lower() == 'clear/logs' or text.lower() == 'clear/l':
+            return 'clearlog'
+        elif text.lower() == 'errors' or text.lower() == 'show/errors' or text.lower() == 'show/e':
+            return 'logerrors'
+        else:
+            return text
+    except TypeError:
+        errorhandler(5)
 
 
 def cleaner(text, toclean):
-    text = list(text)
-    logcat('Cleaned ' + ''.join(text[0:toclean]) + ' from ' + ''.join(text), False)
-    del text[0:toclean]
-    if len(text) > 0 and text[0] == ' ':
-        del text[0]
-    text = ''.join(text)
-    return text
+    try:
+        text = list(text)
+        logcat('Cleaned ' + ''.join(text[0:toclean]) + ' from ' + ''.join(text), False)
+        del text[0:toclean]
+        if len(text) > 0 and text[0] == ' ':
+            del text[0]
+        text = ''.join(text)
+        return text
+    except TypeError:
+        errorhandler(5)
+        return ''
