@@ -237,19 +237,11 @@ def commander(text):
         return text
 
 
-def encodeprocess(text, key):
+def cleaner(text, toclean):
     text = list(text)
-    del text[0:6]
+    logcat('Cleaned ' + ''.join(text[0:toclean]) + ' from ' + ''.join(text), False)
+    del text[0:toclean]
     if len(text) > 0 and text[0] == ' ':
         del text[0]
     text = ''.join(text)
-    return encoder(text, key)
-
-
-def decodeprocess(text, key):
-    text = list(text)
-    del text[0:6]
-    if len(text) > 0 and text[0] == ' ':
-        del text[0]
-    text = ''.join(text)
-    return decoder(text, key)
+    return text
