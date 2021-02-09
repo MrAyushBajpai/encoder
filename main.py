@@ -22,7 +22,8 @@ module.logsize()
 # Take the key for the session from the user
 while True:
     key = str(input('Please enter the Key for this entire session: '))
-    if len(key) >= 8:
+    # Checks if the key has more than 8 characters and less than 16 characters, or not
+    if 8 <= len(key) <= 16:
         break
     else:
         print('Please enter a key with 8 or more characters.')
