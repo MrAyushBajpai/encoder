@@ -64,7 +64,7 @@ while module.errorhandler(code) == 0:
         out = module.commander(mainstr)
 
         if out == 'exit':
-            code = module.errorhandler(0.5)
+            sys.exit()
         elif out == 'clearhistory':
             module.clearhistory()
         elif out == 'showhistory':
