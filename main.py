@@ -1,9 +1,12 @@
 # Importing Necessary Files
+import sys
+import time
 try:
     import module
 except ModuleNotFoundError:
     print('The File Module.py was not found! Are you sure it is in the same directory as the main.py?')
-    module.errorhandler(6)
+    time.sleep(5)
+    sys.exit()
 
 # Defining necessary variables
 processed = ''
@@ -49,7 +52,7 @@ while module.errorhandler(code) == 0:
     mainstr = str(input("Enter the desired command: "))
 
     # Adding the entered data to logcat
-    module.logcat('User Entered - ' + mainstr,  False)
+    module.logcat('User Entered - ' + mainstr, False)
 
     # Some Necessary Local Variables
     data = ''
@@ -117,7 +120,7 @@ while module.errorhandler(code) == 0:
     else:
         pass
 
-# Reset the variables for using again
+    # Reset the variables for using again
     if code == 0:
         encode = ""
         module.logcat('RESET', False)
