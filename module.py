@@ -64,7 +64,6 @@ def encoder(data, key):
         for v in key:
             keysum += ord(v)
         keysum //= len(key)
-        print(int(keysum))
         a = ''
         if checkindex(key, 0):
             for i in data:
