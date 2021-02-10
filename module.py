@@ -63,13 +63,15 @@ def encoder(data, key):
         keysum = 0
         for v in key:
             keysum += ord(v)
+        keysum //= len(key)
+        print(int(keysum))
         a = ''
-        if checkindex(key, 1):
+        if checkindex(key, 0):
             for i in data:
-                a += chr((ord(i) + keysum) % 127)
+                a += chr((ord(i) + int(keysum)) % 127)
         else:
             for i in data:
-                a += chr((ord(i) - keysum) % 127)
+                a += chr((ord(i) - int(keysum)) % 127)
         logcat('Outputing ' + a + ' as the processed output from the encoder', False)
         return a
     except TypeError:
@@ -83,13 +85,14 @@ def decoder(data, key):
         keysum = 0
         for v in key:
             keysum += ord(v)
+        keysum //= len(key)
         a = ''
-        if checkindex(key, 1):
+        if checkindex(key, 0):
             for i in data:
-                a += chr((ord(i) - keysum) % 127)
+                a += chr((ord(i) - int(keysum)) % 127)
         else:
             for i in data:
-                a += chr((ord(i) + keysum) % 127)
+                a += chr((ord(i) + int(keysum)) % 127)
         logcat('Outputing ' + a + ' as the processed output from the decoder', False)
         return a
     except TypeError:
