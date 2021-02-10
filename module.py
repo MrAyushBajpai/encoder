@@ -245,6 +245,7 @@ def commander(text):
         errorhandler(3)
 
 
+# Function to remove 'n' number of items from the start of text
 def cleaner(text, toclean):
     try:
         text = list(text)
