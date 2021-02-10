@@ -1,5 +1,5 @@
 # Encoder Decoder
-This software is made for the purpose of Encoding/Decoding Messages and Statements. It allows you to keep history of the data you encode/decode. You can use multiple commands to manipulate everything. The file main.py is the file you are supposed to run. The module.py only contains all the essential function, it does not have a use of its own, however it needs to be in the same directory/folder as of the main.py.
+This software is made for the purpose of Encoding/Decoding Messages and Statements. It allows you to keep history of the data you encode/decode. You can use multiple commands to manipulate everything. The file main.py is the file you are supposed to run. The module.py only contains all the essential function, it does not have a use of its own, however it needs to be in the same directory/folder as of the main.py. The parameters.cfg file contains basic user-modifiable variables. This file also need to be in the same directory as the main.py and the module.py.
 
 # Basic Syntax
 <process> <task>
