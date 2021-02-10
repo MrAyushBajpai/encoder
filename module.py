@@ -15,7 +15,7 @@ logfile = str(configparser.get('log-parameter', 'log-file'))
 
 # Function for keeping logs, in case something goes off hand
 def logcat(event, iserror):
-    if bool(configparser.get('log-parameter', 'keep-log')):
+    if str(configparser.get('log-parameter', 'keep-log')) == 'True':
         now = datetime.datetime.now()
         current = now.strftime('[%d-%m-%Y||%H:%M:%S]')
         if iserror:
@@ -34,6 +34,8 @@ def logcat(event, iserror):
                 logs.write('\n')
             logs.write(current + '--' + event)
             logs.close()
+    else:
+        pass
 
 
 def checkindex(key, index):
