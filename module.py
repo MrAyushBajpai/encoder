@@ -1,33 +1,39 @@
 # Importing Necessary Libraries
 import os
 import datetime
-import time
+import configparser
+
+# Setting up the configuration file processor
+configparser = configparser.ConfigParser()
+configfilepath = 'parameters.cfg'
+configparser.read(configfilepath)
 
 # Defining Necessary Variables
-historyfile = 'history.hs'
-logfile = 'logs.txt'
+historyfile = str(configparser.get('history-parameter', 'history-file'))
+logfile = str(configparser.get('log-parameter', 'log-file'))
 
 
 # Function for keeping logs, in case something goes off hand
 def logcat(event, iserror):
-    now = datetime.datetime.now()
-    current = now.strftime('[%d-%m-%Y||%H:%M:%S]')
-    if iserror:
-        logs = open(logfile, 'a+')
-        logs.seek(0)
-        data = logs.read(100)
-        if len(data) > 0:
-            logs.write('\n')
-        logs.write('!@' + current + '--' + event)
-        logs.close()
-    else:
-        logs = open(logfile, 'a+')
-        logs.seek(0)
-        data = logs.read(100)
-        if len(data) > 0:
-            logs.write('\n')
-        logs.write(current + '--' + event)
-        logs.close()
+    if bool(configparser.get('log-parameter', 'keep-log')):
+        now = datetime.datetime.now()
+        current = now.strftime('[%d-%m-%Y||%H:%M:%S]')
+        if iserror:
+            logs = open(logfile, 'a+')
+            logs.seek(0)
+            data = logs.read(100)
+            if len(data) > 0:
+                logs.write('\n')
+            logs.write('!@' + current + '--' + event)
+            logs.close()
+        else:
+            logs = open(logfile, 'a+')
+            logs.seek(0)
+            data = logs.read(100)
+            if len(data) > 0:
+                logs.write('\n')
+            logs.write(current + '--' + event)
+            logs.close()
 
 
 def checkindex(key, index):
@@ -65,7 +71,7 @@ def encoder(data, key):
         logcat('Outputing ' + a + ' as the processed output from the encoder', False)
         return a
     except TypeError:
-        errorhandler(5)
+        errorhandler(3)
 
 
 # Function to Decode the data
@@ -85,7 +91,7 @@ def decoder(data, key):
         logcat('Outputing ' + a + ' as the processed output from the decoder', False)
         return a
     except TypeError:
-        errorhandler(5)
+        errorhandler(3)
 
 
 # Function to check if the file exists and if it is empty or not
@@ -104,7 +110,7 @@ def filecheck(path):
         logcat('Outputing ' + str(toreturn) + ' in the file filecheck on path' + path, False)
         return toreturn
     except TypeError:
-        errorhandler(5)
+        errorhandler(3)
         return False
 
 
@@ -170,39 +176,17 @@ def errorhandler(errorcode, optionalspecs=''):
     if errorcode == 0:
         return 0
 
-    # Used to end the program
-    elif errorcode == 0.5:
-        return 0.5
-
-    # When there is a problem while defining the source, when calling a function
-    elif errorcode == 1:
-        logcat('Error on defining the source. CODE-1', True)
-
-    # If the main loop breaks unintenionally
-    elif errorcode == 2:
-        logcat('Unintentional Exit. Loop was broken. Error Code-2', True)
-
     # If the user specified command is not found
-    elif errorcode == 3:
-        logcat('Error Code: 3: Command Not Found! Command Entered was: "' + optionalspecs + '"', True)
+    elif errorcode == 1:
+        logcat('Error Code: 1: Command Not Found! Command Entered was: "' + optionalspecs + '"', True)
 
     # If the user specified process is not found
-    elif errorcode == 4:
-        logcat('Error Code: 4: Process Not Found! Process Entered was: "' + optionalspecs + '"', True)
+    elif errorcode == 2:
+        logcat('Error Code: 2: Process Not Found! Process Entered was: "' + optionalspecs + '"', True)
 
     # Internal Issue: When a TypeError Occurs
-    elif errorcode == 5:
-        logcat('Error Code: 5: Internal Program Issues: TypeError!', True)
-
-    elif errorcode == 6:
-        logcat('Error Code: 6: ModuleNotFoundError!', True)
-
-    # In case of errors, let the user know there's an error, and then end the program
-    if errorcode != 0 and errorcode != 0.5 and errorcode != 3 and errorcode != 4 and errorcode != 6:
-        print('System Encounterd an error. Error Code-' + str(errorcode) + '. Please refer to the logfile for more '
-                                                                           'info.')
-        time.sleep(5)
-        return 1
+    elif errorcode == 3:
+        logcat('Error Code: 3: Internal Program Issues: TypeError!', True)
 
 
 # Function for checking if the log size is higher than 2 Mb
@@ -253,7 +237,7 @@ def commander(text):
         else:
             return text
     except TypeError:
-        errorhandler(5)
+        errorhandler(3)
 
 
 def cleaner(text, toclean):
@@ -266,5 +250,5 @@ def cleaner(text, toclean):
         text = ''.join(text)
         return text
     except TypeError:
-        errorhandler(5)
+        errorhandler(3)
         return ''
