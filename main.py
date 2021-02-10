@@ -1,6 +1,7 @@
 # Importing Necessary Files
 import sys
 import time
+import configparser
 try:
     import module
 except ModuleNotFoundError:
@@ -8,10 +9,10 @@ except ModuleNotFoundError:
     time.sleep(5)
     sys.exit()
 
-# Defining necessary variables
-processed = ''
-code = 0
-exitcall = 0
+# Setting up the configuration file processor
+configparser = configparser.ConfigParser()
+configfilepath = 'parameters.cfg'
+configparser.read(configfilepath)
 
 # Writing to logfile for program startup
 module.logcat('Program Started', False)
@@ -22,11 +23,18 @@ module.logsize()
 # Take the key for the session from the user
 while True:
     key = str(input('Please enter the Key for this entire session: '))
-    # Checks if the key has more than 8 characters and less than 16 characters, or not
-    if 8 <= len(key) <= 16:
-        break
+    # Checks if the key has more than or 8 characters
+    if int(configparser.get('key-parameter', 'minkeylen')) <= len(key):
+        # Checks if the key has less than or 16 characters
+        if len(key) <= int(configparser.get('key-parameter', 'maxkeylen')):
+            break
+        else:
+            print('Please enter a key with 16 or lesser character.')
+            print(' ')
+            continue
     else:
         print('Please enter a key with 8 or more characters.')
+        print(' ')
         continue
 module.logcat('The Key for the session is ' + key, False)
 
@@ -42,13 +50,14 @@ while True:
     else:
         print('Please choose a valid option! Enter Y or N.')
         continue
+
 if tokeeph:
     module.logcat('Keeping the history for the session.', False)
 else:
     module.logcat('Not Keeping History for this session', False)
 
 # Main Loop. Runs until the program ends
-while module.errorhandler(code) == 0:
+while True:
     # Ask the user for statement or command
     mainstr = str(input("Enter the desired command: "))
 
@@ -82,8 +91,8 @@ while module.errorhandler(code) == 0:
         elif out == 'logerrors':
             module.logerror()
         else:
-            print('Error Code - 3: Unable to locate command: "' + out + '"')
-            module.errorhandler(3, out)
+            print('Error Code - 1: Unable to locate command: "' + out + '"')
+            module.errorhandler(1, out)
 
     # Checking if the user specified process was encode
     elif mainstr[0:6].lower() == 'encode':
@@ -107,8 +116,8 @@ while module.errorhandler(code) == 0:
 
     # If the user did not specify any valid process
     else:
-        module.errorhandler(4, mainstr)
-        print('Please enter a vaild process to be undertaken.')
+        module.errorhandler(2, mainstr)
+        print('Error Code - 2: Please enter a vaild process to be undertaken.')
     print(' ')
 
     # Printing Handler
@@ -121,20 +130,5 @@ while module.errorhandler(code) == 0:
     else:
         pass
 
-    # Reset the variables for using again
-    if code == 0:
-        encode = ""
-        module.logcat('RESET', False)
-    else:
-        module.logcat('Program exit', False)
-        exitcall = 1
-
-# Checks to see if the exit was intentional, if there was no exit call
-if exitcall == 0 and code == 0:
-    errorinp = str(input('The program ended without giving us a exit call. Was this exit intentional? (Y/N): '))
-    if errorinp.lower() == 'y' or errorinp.lower() == 'yes':
-        module.errorhandler(2, 'ncode')
-    else:
-        pass
-else:
-    pass
+    # Logcat Program End
+    module.logcat('RESET', False)
